@@ -1,0 +1,17 @@
+{
+  "name": "prismaio",
+  "version": "0.0.1",
+  "description": "project basic of prisma",
+  "main": "server.ts",
+  "author": "andre gois",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsnd --respawn --transpile-only --ignore-watch node_modules server.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.11.1",
+    "prisma": "^3.11.1",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.3"
+  }
+}
