@@ -121,17 +121,89 @@ const result = await prisma.courses.create({
 - npx prisma migrate reset
 - npx prisma migrate dev
 
+- **Opções dentro da ligação com outra tabela**
+
+```
+async function main() {
+  const result = await prisma.courses.create({
+    data: {
+      name: "Curso de Java 17",
+      duration: 500,
+      description: "Curso",
+      teacher: {
+        //aqui
+      },
+    },
+  });
+}
+```
+
+- Se tem certeza que existe esse ID
+
+```
+connect: {          id: "e2ee5520-cc7f-4e9c-a415-703fd298efb8",        },
+```
+
+- Se tem certeza que não existe
+
+```
+create: {
+          name: "Daniele Leão",
+        },
+```
+
+- Talvez não exista
+
+```
+ connectOrCreate: {
+          where: {
+            name: "Andre Gois",
+          },
+          create: {
+            name: "Andre Gois",
+          },
+        },
+```
+
 ### Criar tabela com relacionamento um para um
+
+![um pra muitos](./assets/umParaMuitos.png)
+
+- npx prisma format
+- npx prisma migrate dev
+- yarn prisma studio
 
 ### Inserir dados em tabela com relacionamento
 
+- yarn ts-node-dev src/authors/create.ts
+
 ### Buscar dados em tabela com relacionamento
+
+- yarn ts-node-dev src/books/create.ts
 
 ## 4 Relacionamento One to Many
 
+- Muitos para muitos
+  ![Muitos para muitos](./assets/MuitosParaMuitos.png)
+
 ### Criar tabela com um para muitos
 
+```
+model CoursesModules {
+  id           String   @id @default(uuid())
+  course       Courses  @relation(fields: [fk_id_course], references: [id])
+  fk_id_course String
+  module       Modules  @relation(fields: [fk_id_module], references: [id])
+  fk_id_module String
+  created_at   DateTime @default(now())
+
+  @@map("courses_module")
+}
+```
+
 ### Inserir dados em tabela de um para muitos
+
+- Inserir dados na tabela de muitos pra muitos
 
 ## 5 Relacionamento Many to Many
 
@@ -139,21 +211,46 @@ const result = await prisma.courses.create({
 
 ### Inserindo dados em tabela com relacionamento muito para muitos
 
+- npx prisma migrate dev
+- yarn prisma generate dev
+- yarn ts-node-dev src/modules/create.ts
+- yarn ts-node-dev src/modules/createManyToMany.ts
+
 ### Realizar busca em relacionamento muito para muitos
 
+- yarn ts-node-dev src/search/findByCourse.ts
+
 ### Remover item na tabela
+
+- yarn ts-node-dev src/delete/delete.ts
 
 ## 6 Filters
 
 ### Trabalhando com filtering e sorting
 
+- yarn ts-node-dev src/filter/filterStartWith.ts
+
 ### Trabalhando com pagination
 
 ### Trabalhando com queryRaw
 
+- yarn ts-node-dev src/pagination/pagination.ts
+
 ## 7 Importação de banco de dados
 
+- yarn ts-node-dev src/queryRaw/queryRaw.ts
+
 ### Importando banco de dados
+
+- _schema.prisma_ limpo
+- vai no .env
+- coloca od dados do banco a qual deseja importar
+
+```
+DATABASE_URL="postgresql://admin:admin@localhost:5432/ignitenodejs?schema=public"
+```
+
+- yarn prisma db pull
 
 ## Referência
 
